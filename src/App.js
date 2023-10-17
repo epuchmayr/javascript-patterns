@@ -1,5 +1,5 @@
 import './App.css';
-import { createContext, useState } from 'react';
+import { createContext, useState, useMemo } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
@@ -11,6 +11,8 @@ import {
   Switch,
   FormControlLabel,
 } from '@mui/material';
+
+import { createTheme, ThemeProvider, useMediaQuery }   from '@mui/material';
 
 import observable from './components/observer/observable';
 
@@ -26,6 +28,12 @@ import ModuleSection from './components/module/Module';
 
 import MixinSection from './components/mixin/MixinSection';
 import Mediator from './components/mediator/Mediator';
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 // Observer
 function handleClickToast() {
@@ -66,13 +74,37 @@ function MUIAccordion({ name, description, children }) {
   );
 }
 
+
 function App() {
+
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const [darkMode, setDarkMode] = useState(true)
+
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: (prefersDarkMode && darkMode) ? 'dark' : 'light',
+        },
+      }),
+    [prefersDarkMode, darkMode],
+  );
+
+  function handleToggle () {
+    setDarkMode(!darkMode)
+  }
 
   return (
     <div className='App'>
       <div className='App-body'>
+        <ThemeProvider theme={theme}>
         <h1>Patterns</h1>
         <p>Modern JavaScript patterns</p>
+        
+        <FormControlLabel
+          control={<Switch name='' onChange={handleToggle} />}
+          label='Toggle theme!'
+        />
         <section>
           <MUIAccordion name={'Singleton'}>
             <Singleton />
@@ -109,6 +141,7 @@ function App() {
 
           
         </section>
+          </ThemeProvider>
       </div>
 
       <ToastContainer />

@@ -10,6 +10,9 @@ const counter = {
   },
   decrement() {
     return --count;
+  },
+  other(fn) {
+    return [count] = [fn(count)]
   }
 };
 
