@@ -29,11 +29,6 @@ import ModuleSection from './components/module/Module';
 import MixinSection from './components/mixin/MixinSection';
 import Mediator from './components/mediator/Mediator';
 
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-});
 
 // Observer
 function handleClickToast() {
@@ -74,10 +69,10 @@ function MUIAccordion({ name, description, children }) {
   );
 }
 
-
 function App() {
-
+  //
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  // state for theme toggle
   const [darkMode, setDarkMode] = useState(true)
 
   const theme = useMemo(
@@ -141,8 +136,9 @@ function App() {
 
           
         </section>
-          </ThemeProvider>
+        </ThemeProvider>
       </div>
+
 
       <ToastContainer />
     </div>
